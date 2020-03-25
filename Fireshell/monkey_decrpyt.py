@@ -26,19 +26,8 @@ def unmonkeyed(monkey_troll_string):
 
     return array
 
-png_magic = binascii.unhexlify("89504E470D0A1A0A")
-png_end = binascii.unhexlify("49454E44AE426082")
-png_idat = binascii.unhexlify("49444154")
-
-flag = unmonkeyed(get_troll_string())
-
-#with open("Flag.zip", "wb") as output:
-#    output.write(flag)
-
-'''loc_start = flag.find(png_magic)
-loc_idat = flag.find(png_idat)
-loc_end = flag.find(png_end)
-print(loc_start, loc_idat, loc_end)
-print("Done!")'''
-
-#zf = zipfile.ZipFile(io.BytesIO(flag), 'r', zipfile.ZIP_DEFLATED)
+if __name__ == "__main__":
+    flag = unmonkeyed(get_troll_string())
+    zf = zipfile.ZipFile(io.BytesIO(flag), 'r', zipfile.ZIP_DEFLATED)
+    with open("Flag.zip", "wb") as output:
+        output.write(flag)
