@@ -10,7 +10,7 @@ and the other encrypted ` monkey.zip ` using the generated string.
 
 Taking a peak at the first function ` get_troll_string() ` we see that it is multiplying ` troll_string ` with the value of the first 
 two bytes from ` monkey.zip ` (important later) and returning the newly generated string. 
-```
+```Ruby
 def get_troll_string():
 	troll_string = "MmMmMmMmoOoOoOOoOOonnnNnNNnkkKkKkKkKkkkekeekEKkekekEYyYyyYyyYYYYYYYYYY!!!!!!!!!!!!222@@@@@@2XDDDDDDDD"
 
@@ -26,7 +26,7 @@ def get_troll_string():
 ` monkeyd() ` takes the troll string as an argument, encrypts ` monkey.zip `, and returns the ` you_was_monkeyd.enc ` file. So we 
 know that you_was_monkeyd is the file we are trying to decrypt into ` monkey.zip ` and should contain two files, one the flag and the 
 other a PNG file.
-```
+```Ruby
 def monkeyd(monkey_troll_string):
 	array = []
 	rainbow = 1
@@ -39,11 +39,11 @@ def monkeyd(monkey_troll_string):
 		output.write(bytearray(int(i, 16) for i in array))
 ```
 It loops through each byte of the zip file and uses this line to encrypt:
-``` 
+```Ruby
 array.append(hex((ord(byte)+ord(monkey_troll_string[(rainbow-1)%(len(monkey_troll_string)-1)])+rainbow%256)%256)) 
 ```
 Breaking it out for easier reading:
-```
+```Ruby
 hex(
   (ord(byte) +
   ord(monkey_troll_string)[ (rainbow-1) % (len(monkey_troll_string)-1)] +
@@ -59,19 +59,19 @@ Looking at ` rainbow ` it appeared to just be a counter variable but beginning a
 ` monkey.zip ` would have the same number of bytes so ` rainbow ` can stay as it is. Now onto the tricky part...
 
 Only variable left to figure out is ` byte `. First, I changed the formula into something easier to understand with simple variables:
-```
+```Ruby
 (a + b + c % 256) % 256 = d #encrypted_byte
 ```
 So now we just have to isolate ` a `. I wasn't sure how I was going to reverse the modulus so I started my search going to Google and 
 quickly came across a helpful StackOverflow [question](https://stackoverflow.com/questions/10133194/reverse-modulus-operator). Simple
 answer- you don't have to do anything!
-```
+```Ruby
 a = (d - (b + c)) % 256
 b = ord(monkey_troll_string[ (rainbow-1) % (len(monkey_troll_string)-1) ])
 unencrypted_byte = (encrypted_byte - (b + rainbow)) % 256
 ```
 So our decode script looks like this now:
-```
+```Ruby
 with open("you_was_monkeyd.enc", "rb") as encrypt:
     data = encrypt.read()
 
@@ -101,7 +101,7 @@ After hours of frustration, I finally realized the problem was with my ` troll_s
 the encrypted bytes. Easy fix because it was only the first two bytes and I knew they had to be the values of the zip file header ` PK `.
 
 Final script:
-```
+```Ruby
 #import binascii
 import zipfile
 import io
