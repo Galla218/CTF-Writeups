@@ -1,3 +1,0 @@
-I'm learning assembly. Think you can figure out what this program returns?
-
-Note: Not standard flag format
