@@ -3,7 +3,7 @@ def func1():
     var2 = 0
 
     while(var2 <= 9):
-        var1 += (((var2 + 10) << 2) + (var2 + 10)) + ((((var2 + 10) << 2) + (var2 + 10)) * 4) & 0xff
+        var1 += (((var2 + 10) << 2) + (var2 + 10)) + ((((var2 + 10) << 2) + (var2 + 10)) * 4) 
         var1 = var1 & 0xff
         var2 += 1
     return var1
