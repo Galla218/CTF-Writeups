@@ -7,13 +7,10 @@ key2 = 64
 key3 = 313
 
 def decrypt_str(secret, key):
-    decrypted = []
-    for x in secret:
-        decrypted.append(x ^ key)
-    return decrypted
+    return "".join(chr((x ^ key)) for x in secret)
 
-decrypt_key = bytes(decrypt_str(secret2, key2))
+decrypt_key = decrypt_str(secret2, key2)
 print(decrypt_key)
 
-decrypt_key = bytes(decrypt_str(secret3, key3))
+decrypt_key = decrypt_str(secret3, key3)
 print(decrypt_key)
