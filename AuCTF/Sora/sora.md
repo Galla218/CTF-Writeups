@@ -6,7 +6,7 @@ program before he does?
 
 ## Solution
 Loaded the file into Ghidra and began inspecting `main`. The disassembly looked like so:
-```Ruby
+```C++
 ulong main(void)
 
 {
@@ -38,7 +38,7 @@ ulong main(void)
 We can see that it first retrieves a string from the user and then calls `encrypt` on the given input and if the encrypt function does not return `0` it will print the flag. 
 
 Looking into `encrypt`, it was a while loop which would do some character comparisons with characters from a variable called `secret`.
-```Ruby
+```C++
 void encrypt(char *__block,int __edflag)
 
 {
@@ -56,7 +56,7 @@ void encrypt(char *__block,int __edflag)
 `secret` was equal to `aQLpavpKQcCVpfcg`
 
 We can simply brute force finding a key by iterating through each character of `secret` and applying the same mathematical operations of `encrypt` to a random ascii character and seeing if it matches the current character from `secret`. I created a simple loop in Python which looked like the following
-```Ruby
+```python
 secret = "aQLpavpKQcCVpfcg"
 decrypted = ""
 for y in secret:
