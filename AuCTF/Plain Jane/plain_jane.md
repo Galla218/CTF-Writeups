@@ -7,7 +7,7 @@ I'm learning assembly. Think you can figure out what this program returns?
 I decided to figure this one out the hard way and opened up `plain_jane.s` in Visual Studio and followed the assembly line by line.
 
 Looking at main, I see it calls three different functions.
-```
+```asm
 main:
 .LFB6:
 	.cfi_startproc
@@ -36,17 +36,17 @@ main:
 	.cfi_endproc
   ```
   `func_1` was relatively straight forward. It would initiate two variables with the values `25` and `0`
-  ```
+  ```asm
   mov	BYTE PTR -1[rbp], 25  ; var1
   mov	DWORD PTR -8[rbp], 0  ; var2
   ```
   Compare `var2` to `9` and if less than or equal to, jump
-  ```
+  ```asm
   cmp	DWORD PTR -8[rbp], 9  		; cmp var2 9
   jle	.L5
   ```
   At the jump, `var1` would go through several mathematical operations and `var2` would be incremented by one. So, we have a simple while loop.
-  ```
+  ```asm
   mov	eax, DWORD PTR -8[rbp]	; eax = var2
   add	eax, 10                 ; eax = var2 + 10
   mov	edx, eax                ; edx = var2 + 10
@@ -59,7 +59,7 @@ main:
   add	DWORD PTR -8[rbp], 1    ; var2 += 1
   ```
   I wrote out the function in Python and computed the result
-  ```Ruby
+  ```python
   def func1():
     var1 = 25
     var2 = 0
@@ -71,7 +71,7 @@ main:
     return var1 # var1 = 66
  ```
  `66` is returned to main and moving onto `func_2` I see all it does is return `207`
- ```
+ ```asm
   mov	DWORD PTR -4[rbp], 207		; rbp-4 = 207
   mov	eax, DWORD PTR -4[rbp]		; eax = 207
   pop	rbp
@@ -80,7 +80,7 @@ main:
  The last function is a little lengthier than the other two. Working my way through the first few sections, I see it is 
  just a bunch of conditional if-else statements comparing the two variables we obtained from `func_1` and `func_2`. After going
  through the loops we get to another while loop.
- ```
+ ```asm
  .L14:
     mov	eax, DWORD PTR -36[rbp]		; eax = var1
     or	eax, DWORD PTR -40[rbp]		; eax = var1 || var2
@@ -113,7 +113,7 @@ main:
   ```
   It begins by creating five more variables and then jumps to `L15`. There we compare `var7` with `var5` and move into another loop.
   In `L16` we do some math operations to `var6` and increment `var7`. In Python this function would like this:
-  ```Ruby
+  ```python
   def func3(x, y):
     var1 = x | y
     var2 = x & y
