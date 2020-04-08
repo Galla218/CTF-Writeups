@@ -2,11 +2,11 @@
 secret = "aQLpavpKQcCVpfcg"
 decrypted = ""
 for y in secret:
-    #for x in "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890":
-    for x in range(127):
-        c = ((x * 8) + 19) % 61 + 65
+    for x in "_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890":
+    #for x in range(128):
+        c = ((ord(x) * 8) + 19) % 61 + 65
         if chr(c) == y:
-            decrypted += chr(x)
+            decrypted += x
             break
 
 print(decrypted)
