@@ -21,7 +21,6 @@ def unmonkeyed(monkey_troll_string):
         x = (byte - (b + rainbow)) % 256 
         array.append(x)
         rainbow += 1
-        break
 
     return array
 
