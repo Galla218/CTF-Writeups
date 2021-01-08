@@ -89,7 +89,6 @@ def unmonkeyed(monkey_troll_string):
         decrypted_byte = (encrypted_byte - (b + rainbow)) % 256 
         array.append(decrypted_byte)
         rainbow += 1
-        break
 
     return array
 ```
@@ -124,7 +123,6 @@ def unmonkeyed(monkey_troll_string):
         decrypted_byte = (encrypted_byte - (b + rainbow)) % 256 
         array.append(decrypted_byte)
         rainbow += 1
-        break
 
     return array
 
